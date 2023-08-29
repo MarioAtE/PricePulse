@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "PricePulse",
-  "version": "1.0",
+  "version": "2.0",
   "permissions": ["activeTab", "storage"],
   "browser_action": {
     "default_popup": "popup.html"
