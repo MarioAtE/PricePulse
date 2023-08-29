@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chrome.storage.sync.set({ refreshRate, amount, siteUrl }, () => {
       alert('Settings saved successfully.');
+      chrome.action.setBadgeText({text: 'SET'});
     });
   });
 });
