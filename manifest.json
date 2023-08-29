@@ -3,11 +3,17 @@
   "name": "PricePulse",
   "version": "1.0",
   "description": "Alerts the user when a specified price is found on a specific website",
-  "permissions": ["tabs", "storage", "alarms"],
+  "permissions": ["activeTab", "tabs", "storage", "alarms", "notifications"],
   "action": {
     "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }
