@@ -14,9 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Validate the inputs before saving
     if(word && !isNaN(refreshRate)) {
+      // Check if the word has been found in the page content
+      const isFound = isWordFound(word);
+
       // Save the settings in Chrome storage
       chrome.storage.sync.set({ word, refreshRate }, () => {
-        alert('Settings saved.');
+        if(isFound) {
+          alert('Word/Amount found.');
+        } else {
+          alert('Word/Amount not found.');
+        }
       });
     } else {
       alert('Please provide valid inputs.');
