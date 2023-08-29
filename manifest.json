@@ -3,10 +3,7 @@
   "name": "PricePulse",
   "version": "2.1",
   "permissions": ["activeTab", "storage"],
-  "browser_action": {
-    "default_popup": "popup.html"
-  },
-"background": {
-  "service_worker": "background.js"
-}
+  "background": {
+    "service_worker": "background.js"
+  }
 }
