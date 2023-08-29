@@ -1,27 +1,17 @@
-// Load DOM content before executing script
 document.addEventListener('DOMContentLoaded', () => {
-  // Load saved settings and populate the input fields
-  chrome.storage.sync.get(['refreshRate', 'amount'], (data) => {
+  chrome.storage.sync.get(['refreshRate', 'amount', 'siteUrl'], (data) => {
     document.getElementById('refreshRate').value = data.refreshRate || 1;
     document.getElementById('amount').value = data.amount || 'R349';
+    document.getElementById('siteUrl').value = data.siteUrl || 'https://www.example.com/';
   });
 
-  // Save the user-defined settings when the "Save" button is clicked
   document.getElementById('save').addEventListener('click', () => {
     const refreshRate = document.getElementById('refreshRate').value;
     const amount = document.getElementById('amount').value;
+    const siteUrl = document.getElementById('siteUrl').value;
 
-    chrome.storage.sync.set({ refreshRate, amount }, () => {
-      // Notify the user that the settings were saved successfully
+    chrome.storage.sync.set({ refreshRate, amount, siteUrl }, () => {
       alert('Settings saved successfully.');
-
-      // Update the refresh rate for the alarm in background.js
-      chrome.alarms.clear('refreshPage', () => {
-        chrome.alarms.create('refreshPage', {
-          delayInMinutes: parseFloat(refreshRate),
-          periodInMinutes: parseFloat(refreshRate)
-        });
-      });
     });
   });
 });
