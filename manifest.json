@@ -6,8 +6,8 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  }
+"background": {
+  "service_worker": "background.js",
+  "persistent": false
+}
 }
