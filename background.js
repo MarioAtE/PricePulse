@@ -1,27 +1,23 @@
+// background.js
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.get(['refreshRate'], (data) => {
-    const rate = parseFloat(data.refreshRate) || 1;
-    chrome.alarms.create('refreshPage', {
-      delayInMinutes: rate,
-      periodInMinutes: rate
-    });
-  });
+  // Initialize storage
+  chrome.storage.sync.set({ word: '', refreshRate: 5 });
 });
 
-chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === 'refreshPage') {
-    chrome.storage.sync.get(['site'], (data) => {
-      const site = data.site || '';
-      chrome.tabs.query({url: site + "*"}, (tabs) => {
-        if (tabs.length > 0 && tabs[0].id) {
-          chrome.scripting.executeScript({
-            target: {tabId: tabs[0].id},
-            function: () => {
-              location.reload();
-            }
-          });
-        }
-      });
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.active) {
+    // Inject code to scan the page content
+    chrome.tabs.executeScript(tabId, {
+      code: `document.body.innerText.includes("${word}")`
+    }, (results) => {
+      if (results && results[0]) {
+        alert('Word/Amount found.');
+      } else {
+        alert('Scanning started.');
+        setTimeout(() => {
+          chrome.tabs.reload(tabId);
+        }, refreshRate * 1000);
+      }
     });
   }
 });
