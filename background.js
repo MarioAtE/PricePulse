@@ -21,3 +21,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
   }
 });
+
+function isWordFound(word) {
+  // Inject code to scan the page content
+  chrome.tabs.executeScript(tabId, {
+    code: `document.body.innerText.includes("${word}")`
+  }, (results) => {
+    return results && results[0];
+  });
+}
