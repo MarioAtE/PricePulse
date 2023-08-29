@@ -1,23 +1,25 @@
+// Add a DOMContentLoaded event to ensure the HTML is fully loaded before running JavaScript
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.storage.sync.get(['refreshRate', 'amount', 'site'], (data) => {
-    document.getElementById('refreshRate').value = data.refreshRate || 1;
-    document.getElementById('amount').value = data.amount || 'R349';
-    document.getElementById('site').value = data.site || '';
+  // Load existing settings from Chrome storage and populate the input fields
+  chrome.storage.sync.get(['word', 'refreshRate'], (data) => {
+    document.getElementById('word').value = data.word || '';
+    document.getElementById('refreshRate').value = data.refreshRate || 5;
   });
 
+  // Attach a click event listener to the 'Save' button
   document.getElementById('save').addEventListener('click', () => {
+    // Fetch the word and refresh rate from input fields
+    const word = document.getElementById('word').value;
     const refreshRate = document.getElementById('refreshRate').value;
-    const amount = document.getElementById('amount').value;
-    const site = document.getElementById('site').value;
 
-    chrome.storage.sync.set({ refreshRate, amount, site }, () => {
-      alert('Settings saved successfully.');
-      chrome.alarms.clear('refreshPage', () => {
-        chrome.alarms.create('refreshPage', {
-          delayInMinutes: parseFloat(refreshRate),
-          periodInMinutes: parseFloat(refreshRate)
-        });
+    // Validate the inputs before saving
+    if(word && !isNaN(refreshRate)) {
+      // Save the settings in Chrome storage
+      chrome.storage.sync.set({ word, refreshRate }, () => {
+        alert('Settings saved.');
       });
-    });
+    } else {
+      alert('Please provide valid inputs.');
+    }
   });
 });
