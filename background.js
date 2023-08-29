@@ -9,24 +9,19 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
-  chrome.action.setBadgeText({text: 'RUN'});
-  
-  chrome.storage.sync.get(['siteUrl'], (data) => {
-    const siteUrl = data.siteUrl || 'https://www.example.com/';
-    chrome.tabs.query({ url: siteUrl }, (tabs) => {
-      if (tabs.length > 0 && tabs[0].id) {
-        chrome.scripting.executeScript({
-          target: {tabId: tabs[0].id},
-          files: ['content.js']
-        }, () => {
-          if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
-            chrome.action.setBadgeText({text: 'ERR'});
-          }
-        });
-      } else {
-        chrome.action.setBadgeText({text: 'NF'});
-      }
+  if (alarm.name === 'refreshPage') {
+    chrome.storage.sync.get(['site'], (data) => {
+      const site = data.site || '';
+      chrome.tabs.query({url: site + "*"}, (tabs) => {
+        if (tabs.length > 0 && tabs[0].id) {
+          chrome.scripting.executeScript({
+            target: {tabId: tabs[0].id},
+            function: () => {
+              location.reload();
+            }
+          });
+        }
+      });
     });
-  });
+  }
 });
