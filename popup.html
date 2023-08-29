@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PricePulse Settings</title>
-  </head>
-  <body>
-    <label for="refreshRate">Refresh Rate (minutes):</label>
-    <input type="number" id="refreshRate" min="1">
+<head>
+    <title>PricePulse</title>
+</head>
+<body>
+    <h1>PricePulse Settings</h1>
+    <label for="word">Enter the word or amount to scan:</label>
+    <input type="text" id="word" placeholder="Enter word or amount">
     <br>
-
-    <label for="amount">Word/Amount to Search For:</label>
-    <input type="text" id="amount">
+    <label for="refreshRate">Set the refresh rate (in seconds):</label>
+    <input type="number" id="refreshRate" placeholder="Refresh rate (seconds)">
     <br>
-
-    <label for="site">Website to Monitor:</label>
-    <input type="text" id="site">
-    <br>
-
-    <button id="save">Save</button>
+    <button id="save">Save Settings</button>
     <script src="popup.js"></script>
-  </body>
+</body>
 </html>
