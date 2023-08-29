@@ -1,13 +1,8 @@
 // background.js
-chrome.runtime.onInstalled.addListener(() => {
-  // Initialize storage
-  chrome.storage.sync.set({ word: '', refreshRate: 5 });
-});
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab, changes) => {
-  if (changes.manifest_version === 3 && changeInfo.status === 'complete' && tab.active) {
+chrome.webNavigation.onCommitted.addListener((details) => {
+  if (details.frameUrl === window.location.href && details.isMainFrame) {
     // Inject code to scan the page content
-    chrome.tabs.executeScript(tabId, {
+    chrome.tabs.executeScript(details.tabId, {
       code: `document.body.innerText.includes("${word}")`
     }, (results) => {
       if (results && results[0]) {
@@ -17,11 +12,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab, changes) => {
           icon: 'icon.png',
           type: 'basic'
         });
-      } else {
-        alert('Scanning started.');
-        setTimeout(() => {
-          chrome.tabs.reload(tabId);
-        }, refreshRate * 1000);
       }
     });
   }
