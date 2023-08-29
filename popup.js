@@ -20,7 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save the settings in Chrome storage
       chrome.storage.sync.set({ word, refreshRate }, () => {
         if(isFound) {
-          alert('Word/Amount found.');
+          // Show a notification
+          chrome.notifications.create({
+            title: 'Word/Amount found!',
+            message: 'The word or amount you are looking for has been found on this page.',
+            icon: 'icon.png',
+            type: 'basic'
+          });
         } else {
           alert('Word/Amount not found.');
         }
