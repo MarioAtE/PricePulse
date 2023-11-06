@@ -1,7 +1,8 @@
 // background.js
-chrome.webNavigation.onCommitted.addListener((details) => {
-  if (details.frameUrl === window.location.href && details.isMainFrame) {
-    // Inject code to scan the page content
+// Called when the user clicks on the browser action.
+chrome.webNavigation.onCommitted.addListener((details) => { // or onDOMContentLoaded
+  if (details.frameUrl === window.location.href && details.isMainFrame) { 
+    // Inject code to scan the page content 
     chrome.tabs.executeScript(details.tabId, {
       code: `document.body.innerText.includes("${word}")`
     }, (results) => {

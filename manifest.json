@@ -1,9 +1,20 @@
 {
   "manifest_version": 3,
+  "description": "PricePulse is a browser extension that helps you find the best price for the product you are looking for.",
   "name": "PricePulse",
+
   "version": "2.1",
-  "permissions": ["activeTab", "storage"],
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ], 
+
   "background": {
     "service_worker": "background.js"
-  }
+  } 
 }
